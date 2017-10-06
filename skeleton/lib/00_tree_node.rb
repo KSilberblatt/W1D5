@@ -53,9 +53,8 @@ class PolyTreeNode
     until queue.empty?
       next_node = queue.shift
       return next_node if next_node.value == target_value
-      queue.concat(next_node.children) if next_node.children
+      queue.concat(next_node.children) unless next_node.children.empty?
     end
-
     # queue.each do |node|            ---Fun experiment---
     #   return node if node.value == target_value
     #   queue.concat(node.children) if node.children
