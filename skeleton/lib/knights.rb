@@ -13,7 +13,7 @@ class KnightPathFinder
     until queue.empty?
       next_node = queue.shift
       new_move_positions(next_node.value).each do |next_pos|
-        next_node.add_child(next_pos)
+        next_node.add_child(PolyTreeNode.new(next_pos))
       end
       queue.concat(next_node.children) unless next_node.children.empty?
     end
@@ -25,6 +25,18 @@ class KnightPathFinder
     end
     @visited_position.concat(new_moves)
     new_moves
+  end
+
+  def find_path(end_pos)
+    build_move_tree
+    target_node = @node.dfs(end_pos)
+    path = [target_node.value]
+    current_node = target_node
+    until current_node == @node
+      current_node = current_node.parent
+      path.unshift(current_node.value)
+    end
+    path
   end
 
   def valid_moves(pos)
@@ -46,3 +58,8 @@ class KnightPathFinder
   end
 
 end
+
+kpf = KnightPathFinder.new([0, 0])
+
+p kpf.find_path([7, 6]) # => [[0, 0], [1, 2], [2, 4], [3, 6], [5, 5], [7, 6]]
+p kpf.find_path([6, 2]) # => [[0, 0], [1, 2], [2, 0], [4, 1], [6, 2]]
