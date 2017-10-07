@@ -11,7 +11,9 @@ class TicTacToeNode
     opponent_mark = evaluator == :o ? :x : :o
     return true if @board.over? && @board.winner == opponent_mark
     return false if @board.over? && @board.winner != opponent_mark
-    
+    children.all? do |child|
+      child.losing_node?(evaluator)
+    end
   end
 
   def winning_node?(evaluator)
